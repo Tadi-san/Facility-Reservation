@@ -45,3 +45,5 @@ Spring Boot backend with JWT security, RBAC, object-level reservation checks, im
 - ops.demo / ChangeMe!1234
 - admin.demo / ChangeMe!1234
 # Facility-Reservation
+## Submission Test Script
+- Use `./run_tests.sh` or `./run_test.sh` from the project root to run the backend and frontend test suite expected by submission systems.
