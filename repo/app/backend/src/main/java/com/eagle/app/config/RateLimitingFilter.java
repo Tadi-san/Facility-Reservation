@@ -4,6 +4,7 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -17,12 +18,17 @@ import java.util.concurrent.ConcurrentHashMap;
 @Component
 public class RateLimitingFilter extends OncePerRequestFilter {
     private static final int MAX_REQUESTS_PER_MINUTE = 60;
+    private final boolean enabled;
     private final Map<String, Window> windows = new ConcurrentHashMap<>();
+
+    public RateLimitingFilter(@Value("${eagle.rate-limit.enabled:true}") boolean enabled) {
+        this.enabled = enabled;
+    }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
-        if (!request.getRequestURI().startsWith("/api/")) {
+        if (!enabled || !request.getRequestURI().startsWith("/api/")) {
             filterChain.doFilter(request, response);
             return;
         }

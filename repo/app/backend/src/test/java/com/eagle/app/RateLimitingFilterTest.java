@@ -9,7 +9,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
-@SpringBootTest
+@SpringBootTest(properties = "eagle.rate-limit.enabled=true")
 @AutoConfigureMockMvc
 class RateLimitingFilterTest {
     @Autowired

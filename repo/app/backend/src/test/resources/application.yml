@@ -11,3 +11,5 @@ spring:
 eagle:
   jwt-secret: test-secret-should-be-at-least-thirty-two-characters
   data-encryption-key: test-encryption-key-32-characters-long
+  rate-limit:
+    enabled: false
