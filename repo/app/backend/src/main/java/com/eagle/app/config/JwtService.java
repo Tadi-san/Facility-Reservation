@@ -1,4 +1,4 @@
-﻿package com.eagle.app.config;
+package com.eagle.app.config;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.Claims;

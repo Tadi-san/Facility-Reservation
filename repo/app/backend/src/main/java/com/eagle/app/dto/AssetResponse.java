@@ -1,4 +1,4 @@
-﻿package com.eagle.app.dto;
+package com.eagle.app.dto;
 
 import com.eagle.app.model.Asset;
 import com.eagle.app.model.*;

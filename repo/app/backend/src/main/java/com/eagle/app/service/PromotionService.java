@@ -1,4 +1,4 @@
-﻿package com.eagle.app.service;
+package com.eagle.app.service;
 
 import com.eagle.app.model.Promotion;
 import com.eagle.app.repository.PromotionRepository;

@@ -1,4 +1,4 @@
-﻿package com.eagle.app.repository;
+package com.eagle.app.repository;
 
 import com.eagle.app.model.Announcement;
 import org.springframework.data.jpa.repository.JpaRepository;

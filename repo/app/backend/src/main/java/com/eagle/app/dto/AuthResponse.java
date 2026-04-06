@@ -1,3 +1,3 @@
-﻿package com.eagle.app.dto;
+package com.eagle.app.dto;
 
 public record AuthResponse(String token) {}

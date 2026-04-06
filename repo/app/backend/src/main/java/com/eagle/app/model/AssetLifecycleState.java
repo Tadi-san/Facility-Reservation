@@ -1,4 +1,4 @@
-﻿package com.eagle.app.model;
+package com.eagle.app.model;
 
 public enum AssetLifecycleState {
     NORMAL,

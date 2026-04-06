@@ -1,4 +1,4 @@
-﻿package com.eagle.app.config;
+package com.eagle.app.config;
 
 import com.eagle.app.model.*;
 import com.eagle.app.repository.*;

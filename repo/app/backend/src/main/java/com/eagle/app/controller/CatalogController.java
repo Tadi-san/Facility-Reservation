@@ -1,4 +1,4 @@
-﻿package com.eagle.app.controller;
+package com.eagle.app.controller;
 
 import com.eagle.app.dto.RoomBrowserResponse;
 import com.eagle.app.model.Room;

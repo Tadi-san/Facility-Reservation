@@ -1,11 +1,10 @@
-version: "3.9"
 services:
   postgres:
     image: postgres:15
     environment:
-      POSTGRES_DB: ${POSTGRES_DB}
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB:-eagle}
+      POSTGRES_USER: ${POSTGRES_USER:-eagle}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-eaglepass}
     ports:
       - "5432:5432"
     volumes:
@@ -15,11 +14,11 @@ services:
     build:
       context: ./app/backend
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/${POSTGRES_DB}
-      SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER}
-      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD}
-      JWT_SECRET: ${JWT_SECRET}
-      DATA_ENCRYPTION_KEY: ${DATA_ENCRYPTION_KEY}
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/${POSTGRES_DB:-eagle}
+      SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER:-eagle}
+      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD:-eaglepass}
+      JWT_SECRET: ${JWT_SECRET:-this-is-a-local-dev-secret-change-me}
+      DATA_ENCRYPTION_KEY: ${DATA_ENCRYPTION_KEY:-0123456789ABCDEF0123456789ABCDEF}
     ports:
       - "8080:8080"
     depends_on:
