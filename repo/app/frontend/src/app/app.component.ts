@@ -1,4 +1,4 @@
-import { Component } from "@angular/core";
+import { Component, inject } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { FormBuilder, ReactiveFormsModule, Validators } from "@angular/forms";
 import {
@@ -23,6 +23,9 @@ type Workspace = "requester" | "frontdesk" | "maintenance" | "operations" | "adm
   styleUrl: "./app.component.css"
 })
 export class AppComponent {
+  private readonly fb = inject(FormBuilder);
+  private readonly api = inject(ApiService);
+
   rooms: Room[] = [];
   myReservations: Reservation[] = [];
   scheduleBoard: Reservation[] = [];
@@ -101,8 +104,6 @@ export class AppComponent {
     { id: "operations", title: "Operations", role: "OPS" },
     { id: "admin", title: "Admin", role: "ADMIN" }
   ];
-
-  constructor(private fb: FormBuilder, private api: ApiService) {}
 
   signIn(): void {
     if (this.loginForm.invalid) return;

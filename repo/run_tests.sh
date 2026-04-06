@@ -26,11 +26,15 @@ if [ -f "$PROJECT_DIR/app/frontend/package.json" ]; then
   echo "Running frontend tests..."
   (
     cd "$PROJECT_DIR/app/frontend"
-    if [ ! -d node_modules ]; then
-      echo "Installing frontend dependencies..."
-      npm install
+    echo "Installing frontend dependencies..."
+    npm install --include=dev --no-audit --no-fund
+
+    # Defensive install for transient npm dependency resolution issues in CI.
+    if [ ! -d "node_modules/is-fullwidth-code-point" ]; then
+      npm install is-fullwidth-code-point --no-save --no-audit --no-fund
     fi
-    npm test -- --watch=false --browsers=ChromeHeadless
+
+    npm test
   )
 fi
 
