@@ -18,7 +18,21 @@ if [ -d "$PROJECT_DIR/app/backend" ]; then
   echo "Running backend tests..."
   (
     cd "$PROJECT_DIR/app/backend"
-    mvn test
+    if command -v mvn >/dev/null 2>&1; then
+      mvn test
+    elif [ -x "./mvnw" ]; then
+      ./mvnw test
+    elif command -v docker >/dev/null 2>&1; then
+      echo "mvn not found; running backend tests in Docker Maven..."
+      HOST_PWD="$PWD"
+      if pwd -W >/dev/null 2>&1; then
+        HOST_PWD="$(pwd -W)"
+      fi
+      MSYS_NO_PATHCONV=1 docker run --rm -v "${HOST_PWD}:/workspace" -w /workspace maven:3.9.8-eclipse-temurin-17 mvn test
+    else
+      echo "Backend tests require Maven (mvn/mvnw) or Docker, but none were found." >&2
+      exit 1
+    fi
   )
 fi
 
