@@ -1,0 +1,34 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Eagle Login</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body class="auth-body">
+  <div class="auth-shell">
+    <section class="auth-hero">
+      <span class="eyebrow">Enterprise Workspace</span>
+      <h1>Eagle Control Plane</h1>
+      <p>Secure requester, front desk, maintenance, operations, and admin workspaces.</p>
+    </section>
+    <section class="auth-card">
+      <div class="brand-mark">Eagle</div>
+      <p class="auth-copy">Use seeded credentials to continue testing.</p>
+      <form id="login-form" class="stack">
+        <label class="field"><span>Username</span><input id="username" required></label>
+        <label class="field"><span>Password</span><input id="password" type="password" required></label>
+        <button class="primary-btn" type="submit">Sign In</button>
+      </form>
+      <div class="demo-credentials">
+        <div><strong>Requester:</strong> requester.demo / ChangeMe!1234</div>
+        <div><strong>Agent:</strong> agent.demo / ChangeMe!1234</div>
+        <div><strong>Admin:</strong> admin.demo / ChangeMe!1234</div>
+      </div>
+      <div id="session-status" class="auth-status"></div>
+    </section>
+  </div>
+  <script src="/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,13 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Eagle Redirect</title>
+  <script>
+    const token = localStorage.getItem('eagle_token');
+    window.location.replace(token ? '/dashboard.html' : '/login.html');
+  </script>
+</head>
+<body></body>
+</html>

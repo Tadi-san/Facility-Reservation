@@ -1,0 +1,22 @@
+﻿spring:
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/eagle}
+    username: ${SPRING_DATASOURCE_USERNAME:eagle}
+    password: ${SPRING_DATASOURCE_PASSWORD:eagle}
+  jpa:
+    hibernate:
+      ddl-auto: update
+    open-in-view: false
+    properties:
+      hibernate:
+        format_sql: true
+  jackson:
+    serialization:
+      write-dates-as-timestamps: false
+
+server:
+  port: ${SERVER_PORT:8080}
+
+eagle:
+  jwt-secret: ${JWT_SECRET:ChangeMeChangeMeChangeMeChangeMe123456}
+  data-encryption-key: ${DATA_ENCRYPTION_KEY:ChangeMeEncryptionKeyForEagleData000}

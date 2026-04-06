@@ -1,0 +1,41 @@
+{
+  "exportedAt": "2026-03-31T00:00:00Z",
+  "workspace": "C:/Users/Tad/Desktop/EagleAI/EaglePt/fullstack3",
+  "trajectory": [
+    {
+      "step": 1,
+      "action": "bootstrap",
+      "script": "docker compose --env-file .env up --build"
+    },
+    {
+      "step": 2,
+      "action": "migrate-and-seed",
+      "script": "Flyway migrations V1-V4 create schema, workspace support tables, templates, and demo data"
+    },
+    {
+      "step": 3,
+      "action": "secure-platform",
+      "script": "JWT auth, password complexity, lockout policy, AES-256 converters, RBAC, rate limiting, immutable auditing"
+    },
+    {
+      "step": 4,
+      "action": "activate-domain-engines",
+      "script": "Reservation conflict checks, essential asset dependency handling, maintenance SLA/state flow, finance idempotency/checksum logic"
+    },
+    {
+      "step": 5,
+      "action": "serve-workspaces",
+      "script": "Expose REST controllers and static offline UI for requester, front desk, maintenance, operations, and administrator workspaces"
+    },
+    {
+      "step": 6,
+      "action": "run-background-jobs",
+      "script": "Nightly encrypted backup, 30-day inspection generation, and banner notification processing"
+    },
+    {
+      "step": 7,
+      "action": "verify",
+      "script": "mvn test && npm test"
+    }
+  ]
+}

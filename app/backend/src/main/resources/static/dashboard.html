@@ -1,0 +1,152 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Eagle Dashboard</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body class="dashboard-body">
+<div class="dashboard-shell">
+  <aside class="sidebar">
+    <div class="sidebar-brand"><div class="brand-mark">Eagle</div><p>Secure control plane for every workspace.</p></div>
+    <nav class="sidebar-nav">
+      <button data-panel="requester" class="nav-btn active">Requester</button>
+      <button data-panel="frontdesk" class="nav-btn">Front Desk</button>
+      <button data-panel="maintenance" class="nav-btn">Maintenance</button>
+      <button data-panel="operations" class="nav-btn">Operations</button>
+      <button data-panel="admin" class="nav-btn">Admin</button>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="session-pill"><span>Signed in as</span><strong id="active-user">Unknown</strong></div>
+      <button id="logout-btn" class="ghost-btn">Logout</button>
+    </div>
+  </aside>
+
+  <main class="dashboard-main">
+    <header class="topbar">
+      <div><span class="eyebrow">Operations Dashboard</span><h1 id="panel-title">Requester Workspace</h1></div>
+      <div class="topbar-status"><span class="status-dot"></span><span id="load-status">Loading workspace data...</span></div>
+    </header>
+
+    <section id="requester" class="panel active">
+      <div class="workspace-columns two">
+        <div class="glass-card">
+          <h3>Find Available Rooms</h3>
+          <form id="requester-filter-form" class="stack">
+            <label class="field"><span>Location</span><select id="filter-location"></select></label>
+            <label class="field"><span>Room Type</span><select id="filter-room-type"></select></label>
+            <label class="field"><span>Minimum Capacity</span><input id="filter-capacity" type="number" min="1" value="1"></label>
+            <label class="field"><span>Start Date and Time</span><input id="filter-start" type="datetime-local"></label>
+            <label class="field"><span>End Date and Time</span><input id="filter-end" type="datetime-local"></label>
+            <button type="submit" class="primary-btn">Refresh Availability</button>
+          </form>
+          <div id="requester-feedback" class="panel-note"></div>
+        </div>
+        <div class="glass-card">
+          <h3>Create Reservation</h3>
+          <form id="reservation-form" class="stack">
+            <label class="field"><span>Select Room</span><select id="selected-room-id"></select></label>
+            <div id="selected-room-label" class="panel-note">Choose an available room from the filtered list.</div>
+            <label class="field"><span>Reservation Start</span><input id="reservation-start" type="datetime-local"></label>
+            <label class="field"><span>Reservation End</span><input id="reservation-end" type="datetime-local"></label>
+            <label class="field"><span>Promotion Code</span><input id="reservation-promo" placeholder="EARLY10"></label>
+            <div class="workspace-summary"><div><strong id="booking-estimate">$0.00</strong><span>Estimated total</span></div><div><strong id="booking-final">$0.00</strong><span>After promotion</span></div></div>
+            <div class="action-row"><button type="button" id="apply-promo-btn" class="ghost-accent-btn">Apply Promotion</button><button class="primary-btn" type="submit">Book Room</button></div>
+          </form>
+          <div id="booking-feedback" class="panel-note"></div>
+        </div>
+      </div>
+      <div id="rooms-grid" class="workspace-grid"></div>
+      <div class="glass-card"><h3>My Reservations</h3><div id="reservation-list"></div></div>
+    </section>
+
+    <section id="frontdesk" class="panel">
+      <div class="workspace-columns two">
+        <div class="glass-card">
+          <h3>Live Schedule Board</h3>
+          <form id="schedule-filter-form" class="stack">
+            <div class="weights-grid">
+              <label class="field"><span>Room</span><input id="schedule-room-filter" placeholder="A101"></label>
+              <label class="field"><span>Status</span><select id="schedule-status-filter"><option value="">All statuses</option><option value="PENDING">PENDING</option><option value="APPROVED">APPROVED</option><option value="CHECKED_IN">CHECKED_IN</option><option value="COMPLETED">COMPLETED</option></select></label>
+              <label class="field"><span>From</span><input id="schedule-from-filter" type="datetime-local"></label>
+              <label class="field"><span>To</span><input id="schedule-to-filter" type="datetime-local"></label>
+            </div>
+            <button class="primary-btn" type="submit">Refresh Board</button>
+          </form>
+          <div id="schedule-board"></div>
+        </div>
+        <div class="glass-card">
+          <h3>Editable Banner Templates</h3>
+          <form id="banner-form" class="stack">
+            <label class="field"><span>Template Key</span><input id="banner-key" value="ARRIVAL_30M"></label>
+            <label class="field"><span>Minutes Before Event</span><input id="banner-minutes" type="number" value="30"></label>
+            <label class="field"><span>Banner Message</span><textarea id="banner-message"></textarea></label>
+            <button class="primary-btn" type="submit">Save Template</button>
+          </form>
+          <div id="banner-list"></div>
+        </div>
+      </div>
+      <div class="workspace-columns two">
+        <div class="glass-card">
+          <h3>Shift Handoff Notes</h3>
+          <form id="handoff-form" class="stack">
+            <label class="field"><span>From Agent</span><select id="handoff-from"></select></label>
+            <label class="field"><span>Assign To Agent</span><select id="handoff-to"></select></label>
+            <label class="field"><span>Handoff Summary</span><textarea id="handoff-summary"></textarea></label>
+            <label class="field"><span>Unresolved Tasks</span><textarea id="handoff-tasks"></textarea></label>
+            <button class="primary-btn" type="submit">Save Handoff</button>
+          </form>
+          <div id="handoff-list"></div>
+        </div>
+        <div class="glass-card">
+          <h3>In-App Notification Banners</h3>
+          <div class="action-row"><button id="refresh-notifications-btn" class="primary-btn" type="button">Refresh Notification Queue</button></div>
+          <h4>Active Banners</h4><div id="active-banner-list"></div>
+          <h4>Notification History</h4><div id="notification-history-list"></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="maintenance" class="panel">
+      <div class="workspace-columns two"><div class="glass-card"><h3>Inspection Schedule</h3><div id="inspection-list"></div></div><div class="glass-card"><h3>Repair Tickets</h3><div id="ticket-list"></div></div></div>
+      <div class="glass-card"><h3>Closed-Loop Asset Repair Flow</h3>
+        <form id="asset-status-form" class="stack inline-stack">
+          <label class="field"><span>Selected Asset</span><select id="asset-id"></select></label>
+          <label class="field"><span>Operational Status</span><select id="asset-operational-status"><option value="IN_SERVICE">IN_SERVICE</option><option value="OUT_OF_SERVICE">OUT_OF_SERVICE</option></select></label>
+          <label class="field"><span>Lifecycle State</span><select id="asset-lifecycle-state"><option value="NORMAL">NORMAL</option><option value="UNDER_REPAIR">UNDER_REPAIR</option><option value="RETIRED">RETIRED</option></select></label>
+          <button class="primary-btn" type="submit">Update Asset</button>
+        </form>
+        <div id="asset-list"></div>
+      </div>
+    </section>
+
+    <section id="operations" class="panel">
+      <div class="workspace-columns three">
+        <div class="glass-card"><h3>Promotion Configuration</h3><form id="promotion-form" class="stack"><label class="field"><span>Promotion Code</span><input id="promotion-code" value="EARLY10"></label><label class="field"><span>Discount Percent</span><input id="promotion-percent" type="number" value="10"></label><label class="field"><span>Promotion Type</span><select id="promotion-type"><option value="EARLY_BIRD">EARLY_BIRD</option><option value="TIERED">TIERED</option></select></label><button class="primary-btn" type="submit">Save Promotion</button></form><div id="promotion-list"></div></div>
+        <div class="glass-card"><h3>Dashboard Announcements</h3><form id="announcement-form" class="stack"><label class="field"><span>Announcement Title</span><input id="announcement-title"></label><label class="field"><span>Announcement Message</span><textarea id="announcement-message"></textarea></label><button class="primary-btn" type="submit">Publish</button></form><div id="announcement-list"></div></div>
+        <div class="glass-card"><h3>Attachment Moderation Queue</h3><div id="moderation-list"></div></div>
+      </div>
+    </section>
+
+    <section id="admin" class="panel">
+      <div class="workspace-columns two">
+        <div class="glass-card"><h3>Versioned Scorecards</h3><form id="scorecard-form" class="stack"><label class="field"><span>Metric Key</span><input id="metric-key" value="ops_scorecard"></label><label class="field"><span>Effective From</span><input id="effective-from" type="date"></label><label class="field"><span>Effective To</span><input id="effective-to" type="date"></label><div class="weights-grid"><label class="field"><span>Quality</span><input id="weight-quality" type="number" value="35"></label><label class="field"><span>Speed</span><input id="weight-speed" type="number" value="25"></label><label class="field"><span>Compliance</span><input id="weight-compliance" type="number" value="20"></label><label class="field"><span>Experience</span><input id="weight-experience" type="number" value="20"></label></div><button class="primary-btn" type="submit">Create Scorecard</button></form><div id="scorecard-feedback" class="panel-note"></div></div>
+        <div class="glass-card"><h3>Historical Versions</h3><div id="scorecard-list"></div></div>
+      </div>
+      <div class="workspace-columns two">
+        <div class="glass-card"><h3>Create Room</h3><form id="room-form" class="stack"><label class="field"><span>Location Code</span><input id="room-location-code" value="HQ"></label><label class="field"><span>Location Name</span><input id="room-location-name" value="Main Campus"></label><label class="field"><span>Location Address</span><input id="room-location-address" value="100 Enterprise Way"></label><label class="field"><span>Room Type</span><input id="room-type-name" value="Boardroom"></label><label class="field"><span>Room Number</span><input id="room-number" placeholder="B201"></label><div class="weights-grid"><label class="field"><span>Floor</span><input id="room-floor" type="number" value="2"></label><label class="field"><span>Capacity</span><input id="room-capacity" type="number" min="1" value="10"></label></div><div class="checkbox-row"><label><input id="room-projector" type="checkbox" checked> Include projector</label><label><input id="room-hvac" type="checkbox" checked> Include HVAC</label></div><button class="primary-btn" type="submit">Create Room</button></form><div id="room-feedback" class="panel-note"></div></div>
+        <div class="glass-card"><h3>Room Directory</h3><div id="admin-room-list"></div></div>
+      </div>
+      <div class="workspace-columns two">
+        <div class="glass-card"><h3>Create User</h3><form id="user-form" class="stack"><label class="field"><span>Username</span><input id="user-username"></label><label class="field"><span>Email</span><input id="user-email" type="email"></label><label class="field"><span>Password</span><input id="user-password" type="password"></label><label class="field"><span>Role</span><select id="user-role"><option value="REQUESTER">REQUESTER</option><option value="AGENT">AGENT</option><option value="TECH">TECH</option><option value="OPS">OPS</option><option value="ADMIN">ADMIN</option></select></label><label class="field"><span>Staff Contact Info</span><input id="user-contact"></label><button class="primary-btn" type="submit">Create User</button></form><div id="user-feedback" class="panel-note"></div></div>
+        <div class="glass-card"><h3>User Directory</h3><div id="user-list"></div></div>
+      </div>
+      <div class="glass-card"><h3>Equipment Controls</h3><div id="admin-asset-list"></div></div>
+    </section>
+
+  </main>
+</div>
+<script src="/app.js"></script>
+</body>
+</html>

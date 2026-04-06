@@ -1,0 +1,67 @@
+﻿:root {
+    --ink: #122033;
+    --ink-soft: #5f7086;
+    --panel: rgba(255, 255, 255, 0.78);
+    --panel-strong: rgba(255, 255, 255, 0.92);
+    --line: rgba(18, 32, 51, 0.1);
+    --accent: #ff7a18;
+    --accent-deep: #db5e00;
+    --accent-cool: #0d9488;
+    --danger: #b91c1c;
+    --shadow: 0 18px 50px rgba(18, 32, 51, 0.14);
+}
+* { box-sizing: border-box; }
+body { margin: 0; color: var(--ink); font-family: "Segoe UI", "Trebuchet MS", sans-serif; background: radial-gradient(circle at top left, rgba(255,122,24,.18), transparent 28%), radial-gradient(circle at bottom right, rgba(13,148,136,.16), transparent 32%), linear-gradient(135deg,#f5efe7 0%,#eef5fa 45%,#e5eef3 100%); }
+.auth-shell { min-height: 100vh; display: grid; grid-template-columns: 1.25fr 0.95fr; padding: 32px; gap: 28px; }
+.auth-hero,.auth-card,.glass-card,.hero-card,.sidebar,.topbar,.session-pill,.item,.workspace-card { backdrop-filter: blur(18px); box-shadow: var(--shadow); }
+.auth-hero { border-radius: 34px; padding: 48px; background: linear-gradient(160deg, rgba(18, 32, 51, 0.92), rgba(30, 64, 175, 0.75)); color: #f8fafc; display: flex; flex-direction: column; justify-content: center; }
+.auth-hero h1 { margin: 10px 0 16px; font-size: clamp(2.5rem, 6vw, 4.5rem); line-height: .95; letter-spacing: -.04em; }
+.auth-card { background: var(--panel-strong); border-radius: 34px; padding: 36px; border: 1px solid rgba(255,255,255,.45); }
+.brand-mark { width: fit-content; padding: 10px 16px; border-radius: 999px; background: linear-gradient(135deg,var(--accent),var(--accent-cool)); color: white; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+.auth-copy,.panel-note,.sidebar-brand p,.session-pill span,.item-meta,.workspace-subcopy { color: var(--ink-soft); }
+.dashboard-shell { min-height: 100vh; display: grid; grid-template-columns: 280px 1fr; padding: 24px; gap: 20px; }
+.sidebar { padding: 24px; border-radius: 30px; background: rgba(18, 32, 51, .9); color: white; display: flex; flex-direction: column; }
+.sidebar-nav { display: grid; gap: 10px; margin: 28px 0; }
+.sidebar-footer { margin-top: auto; display: grid; gap: 14px; }
+.session-pill { border-radius: 20px; padding: 14px 16px; background: rgba(255, 255, 255, .08); }
+.dashboard-main { display: grid; gap: 18px; }
+.topbar { display: flex; justify-content: space-between; align-items: center; background: var(--panel); border-radius: 28px; padding: 22px 24px; border: 1px solid rgba(255,255,255,.45); }
+.topbar h1 { margin: 8px 0 0; font-size: clamp(1.8rem, 3vw, 2.8rem); letter-spacing: -.03em; }
+.topbar-status { display: inline-flex; align-items: center; gap: 10px; color: var(--ink-soft); font-weight: 600; }
+.status-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--accent-cool); box-shadow: 0 0 0 8px rgba(13,148,136,.12); }
+.panel { display: none; gap: 18px; }
+.panel.active { display: grid; }
+.glass-card,.workspace-card { background: var(--panel); border-radius: 28px; padding: 24px; border: 1px solid rgba(255,255,255,.45); }
+.workspace-columns.two { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 18px; }
+.workspace-columns.three { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 18px; }
+.workspace-grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(240px,1fr)); gap: 18px; }
+.weights-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 12px; }
+.nav-btn,.primary-btn,.ghost-btn,button { border: 0; cursor: pointer; transition: transform .18s ease, box-shadow .18s ease, background .18s ease; }
+.nav-btn { padding: 14px 16px; border-radius: 18px; text-align: left; background: rgba(255,255,255,.08); color: rgba(255,255,255,.82); font-weight: 600; }
+.nav-btn.active { background: linear-gradient(135deg,rgba(255,122,24,.95),rgba(13,148,136,.92)); color: white; transform: translateX(2px); }
+.primary-btn,button { padding: 12px 16px; border-radius: 16px; background: linear-gradient(135deg,var(--accent),var(--accent-cool)); color: white; font-weight: 700; }
+.ghost-btn { padding: 12px 16px; border-radius: 16px; background: rgba(255,255,255,.08); color: white; }
+.ghost-accent-btn { padding: 12px 16px; border-radius: 16px; background: rgba(13,148,136,.12); color: var(--ink); border: 1px solid rgba(13,148,136,.2); font-weight: 700; }
+button:disabled { opacity: .55; cursor: not-allowed; transform: none; }
+.stack { display: grid; gap: 12px; }
+.inline-stack { grid-template-columns: repeat(4,minmax(0,1fr)); align-items: end; }
+.field { display: grid; gap: 8px; font-weight: 600; }
+input,textarea,select { width: 100%; padding: 14px 16px; border-radius: 16px; border: 1px solid var(--line); background: rgba(255,255,255,.88); color: var(--ink); font: inherit; }
+textarea { min-height: 96px; resize: vertical; }
+.item,.workspace-card { padding: 16px; margin-bottom: 12px; border-radius: 20px; background: rgba(255,255,255,.88); border: 1px solid rgba(18,32,51,.07); }
+.warning { color: var(--danger); font-weight: 700; }
+.success-text { color: var(--accent-cool); font-weight: 700; }
+.workspace-summary,.action-row { display: flex; gap: 12px; flex-wrap: wrap; }
+.workspace-summary { padding: 14px 16px; border-radius: 18px; background: rgba(18,32,51,.05); justify-content: space-between; }
+.checkbox-row { display: flex; gap: 18px; flex-wrap: wrap; font-weight: 600; }
+.checkbox-row label { display: inline-flex; align-items: center; gap: 8px; }
+.checkbox-row input[type="checkbox"] { width: auto; }
+.toast-container { position: fixed; top: 24px; right: 24px; display: grid; gap: 10px; z-index: 9999; }
+.toast { min-width: 260px; max-width: 360px; padding: 14px 16px; border-radius: 16px; color: white; box-shadow: var(--shadow); backdrop-filter: blur(14px); transition: opacity .25s ease, transform .25s ease; }
+.toast-success { background: rgba(13,148,136,.92); }
+.toast-error { background: rgba(185,28,28,.94); }
+.toast-hide { opacity: 0; transform: translateY(-6px); }
+@media (max-width: 1100px) {
+  .auth-shell,.dashboard-shell,.workspace-columns.two,.workspace-columns.three,.inline-stack,.weights-grid { grid-template-columns: 1fr; }
+  .topbar { align-items: flex-start; flex-direction: column; gap: 14px; }
+}

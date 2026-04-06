@@ -1,0 +1,141 @@
+<main class="shell">
+  <section class="panel">
+    <h1>Eagle Angular Workspaces</h1>
+    <p>{{ status }}</p>
+    <form [formGroup]="loginForm" (ngSubmit)="signIn()">
+      <label>Username <input formControlName="username" /></label>
+      <label>Password <input type="password" formControlName="password" /></label>
+      <button type="submit">Sign In</button>
+    </form>
+    <div class="tabs" *ngIf="roles.length > 0">
+      <button *ngFor="let tab of workspaceTabs" [disabled]="!isWorkspaceVisible(tab.id)" [class.active]="activeWorkspace === tab.id" (click)="switchWorkspace(tab.id)">
+        {{ tab.title }}
+      </button>
+    </div>
+  </section>
+
+  <section class="panel" *ngIf="activeWorkspace === 'requester' && isWorkspaceVisible('requester')">
+    <h2>Requester Workspace</h2>
+    <ul><li *ngFor="let room of rooms">{{ room.roomNumber }} - {{ room.location }} - {{ room.availabilityMessage }}</li></ul>
+    <form [formGroup]="reservationForm" (ngSubmit)="submitReservation()">
+      <label>Room <select formControlName="roomId"><option *ngFor="let room of rooms" [value]="room.id">{{ room.roomNumber }}</option></select></label>
+      <label>Start <input type="datetime-local" formControlName="startTime" /></label>
+      <label>End <input type="datetime-local" formControlName="endTime" /></label>
+      <button type="submit">Create Reservation</button>
+    </form>
+    <h3>My Reservations</h3>
+    <ul><li *ngFor="let reservation of myReservations">{{ reservation.roomNumber }} - {{ reservation.status }}</li></ul>
+  </section>
+
+  <section class="panel" *ngIf="activeWorkspace === 'frontdesk' && isWorkspaceVisible('frontdesk')">
+    <h2>Front Desk Workspace</h2>
+    <button (click)="runNotificationQueue()">Queue Notification Refresh</button>
+    <h3>Schedule Board</h3>
+    <ul>
+      <li *ngFor="let row of scheduleBoard">
+        {{ row.roomNumber }} - {{ row.requesterUsername }} - {{ row.status }}
+        <button *ngIf="row.status === 'PENDING' || row.status === 'APPROVED'" (click)="confirmArrival(row.id)">Confirm Arrival</button>
+        <button *ngIf="row.status === 'CHECKED_IN'" (click)="checkout(row.id)">Checkout</button>
+      </li>
+    </ul>
+    <h3>Notifications</h3>
+    <ul>
+      <li *ngFor="let notification of notifications">
+        {{ notification.templateKey }} - {{ notification.message }} - {{ notification.status }}
+        <button *ngIf="notification.status === 'PROCESSED'" (click)="dismissNotification(notification.id)">Dismiss</button>
+      </li>
+    </ul>
+    <h3>Banner Templates</h3>
+    <form [formGroup]="bannerTemplateForm" (ngSubmit)="saveBannerTemplate()">
+      <label>Template Key <input formControlName="templateKey" /></label>
+      <label>Minutes Before <input type="number" formControlName="minutesBefore" /></label>
+      <label>Message <input formControlName="message" /></label>
+      <button type="submit">Save Template</button>
+    </form>
+    <ul><li *ngFor="let template of bannerTemplates">{{ template.templateKey }} - {{ template.minutesBefore }} min - {{ template.message }}</li></ul>
+    <h3>Shift Handoffs</h3>
+    <form [formGroup]="shiftHandoffForm" (ngSubmit)="saveShiftHandoff()">
+      <label>From Agent
+        <select formControlName="fromUserId">
+          <option *ngFor="let agent of frontDeskAgents" [value]="agent.id">{{ agent.username }}</option>
+        </select>
+      </label>
+      <label>To Agent
+        <select formControlName="toUserId">
+          <option *ngFor="let agent of frontDeskAgents" [value]="agent.id">{{ agent.username }}</option>
+        </select>
+      </label>
+      <label>Summary <input formControlName="summary" /></label>
+      <label>Pending Tasks <input formControlName="pendingTasks" /></label>
+      <button type="submit">Save Handoff</button>
+    </form>
+    <ul><li *ngFor="let handoff of shiftHandoffs">{{ handoff.fromUser }} -> {{ handoff.toUser }} | {{ handoff.summary }}</li></ul>
+  </section>
+
+  <section class="panel" *ngIf="activeWorkspace === 'maintenance' && isWorkspaceVisible('maintenance')">
+    <h2>Maintenance Workspace</h2>
+    <form [formGroup]="maintenanceForm" (ngSubmit)="openMaintenanceTicket()">
+      <label>Title <input formControlName="title" /></label>
+      <label>Room Number <input formControlName="roomNumber" /></label>
+      <label>Description <input formControlName="description" /></label>
+      <button type="submit">Open Ticket</button>
+    </form>
+    <h3>Tickets</h3>
+    <ul>
+      <li *ngFor="let ticket of maintenanceTickets">
+        {{ ticket.title }} - {{ ticket.status }} - Due {{ ticket.slaDueAt }} - Overdue {{ ticket.overdue }}
+        <button *ngIf="ticket.status !== 'CLOSED'" (click)="closeTicket(ticket.id)">Close</button>
+      </li>
+    </ul>
+    <h3>Inspections</h3>
+    <ul><li *ngFor="let inspection of inspections">{{ inspection.roomNumber }} - {{ inspection.inspectionTime }} - {{ inspection.outcome }}</li></ul>
+  </section>
+
+  <section class="panel" *ngIf="activeWorkspace === 'operations' && isWorkspaceVisible('operations')">
+    <h2>Operations Workspace</h2>
+    <form [formGroup]="promotionForm" (ngSubmit)="createPromotion()">
+      <label>Code <input formControlName="code" /></label>
+      <label>Percentage <input type="number" formControlName="percentage" /></label>
+      <button type="submit">Create Promotion</button>
+    </form>
+    <ul><li *ngFor="let promotion of promotions">{{ promotion.code }} - {{ promotion.percentage }}%</li></ul>
+    <form [formGroup]="announcementForm" (ngSubmit)="createAnnouncement()">
+      <label>Announcement Title <input formControlName="title" /></label>
+      <label>Announcement Message <input formControlName="message" /></label>
+      <button type="submit">Publish Announcement</button>
+    </form>
+    <ul><li *ngFor="let announcement of announcements">{{ announcement.title }} - {{ announcement.message }}</li></ul>
+    <h3>Moderation Queue</h3>
+    <form [formGroup]="moderationForm" (ngSubmit)="addModerationItem()">
+      <label>File Name <input formControlName="fileName" /></label>
+      <label>Content Type <input formControlName="contentType" /></label>
+      <label>Status <input formControlName="status" /></label>
+      <label>Reason <input formControlName="reason" /></label>
+      <button type="submit">Add Moderation Item</button>
+    </form>
+    <ul><li *ngFor="let item of moderationItems">{{ item.fileName }} - {{ item.status }} - {{ item.reason }}</li></ul>
+    <button (click)="queueReindex()">Queue Search Reindex</button>
+    <form [formGroup]="searchForm" (ngSubmit)="runSearch()">
+      <label>Search Query <input formControlName="query" /></label>
+      <button type="submit">Search Operations Index</button>
+    </form>
+    <ul><li *ngFor="let result of searchResults">{{ result.sourceType }} #{{ result.sourceId }} - {{ result.content }}</li></ul>
+  </section>
+
+  <section class="panel" *ngIf="activeWorkspace === 'admin' && isWorkspaceVisible('admin')">
+    <h2>Admin Workspace</h2>
+    <form [formGroup]="userForm" (ngSubmit)="createUser()">
+      <label>Username <input formControlName="username" /></label>
+      <label>Email <input formControlName="email" /></label>
+      <label>Password <input formControlName="password" /></label>
+      <label>Role <select formControlName="role"><option>REQUESTER</option><option>AGENT</option><option>TECH</option><option>OPS</option><option>ADMIN</option></select></label>
+      <button type="submit">Create User</button>
+    </form>
+    <ul><li *ngFor="let user of users">{{ user.username }} - {{ user.email }}</li></ul>
+    <form [formGroup]="scorecardForm" (ngSubmit)="createScorecard()">
+      <label>Metric Key <input formControlName="metricKey" /></label>
+      <button type="submit">Create Scorecard Version</button>
+    </form>
+    <ul><li *ngFor="let scorecard of scorecards">{{ scorecard.metricKey }} v{{ scorecard.version }} - {{ scorecard.effectiveFrom }}</li></ul>
+  </section>
+</main>
